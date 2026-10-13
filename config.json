@@ -1,0 +1,74 @@
+{
+  "_ghi_chu": "File cau hinh cho sap_xep_tai_lieu.py - sua truc tiep roi chay lai tool.",
+
+  "thu_muc_nguon": "H:\\tool_files\\2007 file sách hoàn thành",
+  "thu_muc_dich": "H:\\tool_files\\Sach_SAPXEP",
+  "dinh_dang_ho_tro": [".pdf", ".docx", ".doc"],
+  "bo_qua_file_tam": true,
+  "thu_muc_khong_xac_dinh_nam": "_KHONG_XAC_DINH_NAM",
+  "copy_giu_file_goc": true,
+  "ghi_de_file_dich": false,
+
+  "_ghi_chu_ngay": [
+    "Thu tu uu tien chon 6 so ngay/thang/nam (nhom 2). Nhom 2 theo quy dinh la",
+    "'thoi gian tao File' nen mac dinh uu tien ngay co san trong ten file cu.",
+    "  ten_file_cu       = 6 so dang co trong ten file hien tai (neu hop le)",
+    "  noi_dung_du_ngay  = ngay co du ngay+thang+nam doc trong noi dung file",
+    "  noi_dung_thang_nam= chi doc duoc thang+nam trong noi dung (lay ngay = 01)",
+    "  ngay_sua_file     = ngay chinh sua file tren o dia",
+    "Neu muon UU TIEN NGAY DOC TRONG NOI DUNG, doi thanh:",
+    "  [\"noi_dung_du_ngay\", \"ten_file_cu\", \"noi_dung_thang_nam\", \"ngay_sua_file\"]",
+    "Luu y: ngay trong noi dung sach bao/van ban thuong la ngay dan chung tai lieu,",
+    "khong phai ngay tao file, nen co the lech xa (vi du sach 2007 nhung trich dan 1949)."
+  ],
+  "ngay_uu_tien": ["ten_file_cu", "noi_dung_du_ngay", "noi_dung_thang_nam", "ngay_sua_file"],
+  "ngay_phai_cung_nam_voi_thu_muc": true,
+
+  "_ghi_chu_nam": [
+    "Nam de gom thu muc LUON duoc doc tu noi dung file.",
+    "Neu khong doc duoc nam: file duoc copy nguyen ten vao thu muc _KHONG_XAC_DINH_NAM",
+    "va ghi vao sheet 'Thieu_nam_trong_noi_dung' (kem ngay chinh sua file)."
+  ],
+
+  "ten": {
+    "viet_thuong": false,
+    "bo_dau": true,
+    "giu_ky_tu": "-()",
+    "do_dai_toi_da": 170,
+    "viet_hoa_phan_mo_rong": false
+  },
+
+  "mac_dinh": {
+    "loai_file": "R",
+    "don_vi": "04",
+    "tinh_trang": "M",
+    "so_lan_xuat_ban": "00"
+  },
+
+  "_ghi_chu_loai_file": "Nhom 3: R=file ruot, B=file bia, D=sach dien tu, K=van ban/tai lieu khac",
+  "doan_loai_file": [
+    { "ma": "B", "tu_khoa": ["bìa", "bia sach", "file bia", "trang bia"] },
+    { "ma": "D", "tu_khoa": ["sách điện tử", "sach dien tu", "ebook", "e-book", "file điện tử"] },
+    { "ma": "R", "tu_khoa": ["file ruột", "ruot sach", "nội dung sách"] },
+    { "ma": "K", "tu_khoa": ["công văn", "tờ trình", "báo cáo", "văn bản đi", "tài liệu khác"] }
+  ],
+
+  "_ghi_chu_don_vi": "Nhom 4: don vi ban hanh theo Quyet dinh 68-QD/TW (xem anh 2)",
+  "doan_don_vi": [
+    { "ma": "02", "tu_khoa": ["đảng cộng sản", "nghị quyết đại hội", "điều lệ đảng", "xây dựng đảng", "đảng bộ", "công tác đảng"] },
+    { "ma": "03", "tu_khoa": ["luật", "bộ luật", "pháp luật", "pháp lệnh", "nghị định", "thông tư", "hiến pháp", "quy phạm pháp luật", "xử phạt vi phạm hành chính"] },
+    { "ma": "05", "tu_khoa": ["kinh tế", "doanh nghiệp", "thị trường", "tài chính", "ngân hàng", "đầu tư", "thương mại", "WTO", "cổ phần", "tín dụng"] },
+    { "ma": "06", "tu_khoa": ["quốc tế", "thế giới", "nước ngoài", "toàn cầu"] },
+    { "ma": "07", "tu_khoa": ["giáo trình", "bài giảng", "sách tham khảo", "hỏi - đáp", "hỏi đáp", "cẩm nang", "tập bài giảng"] },
+    { "ma": "04", "tu_khoa": ["hồ chí minh", "mác", "lênin", "lý luận", "chủ nghĩa xã hội", "tư tưởng", "kinh điển"] }
+  ],
+
+  "_ghi_chu_tinh_trang": "Nhom 5 + 6: M=xuat ban moi, T=tai ban; so lan xuat ban 2 chu so",
+  "doan_tinh_trang": {
+    "tai_ban": ["tái bản", "in lần thứ", "tái bản lần thứ", "in lại"],
+    "xuat_ban_moi": ["xuất bản lần đầu", "in lần đầu", "xuất bản mới"]
+  },
+
+  "so_trang_pdf_toi_da": 0,
+  "gioi_han_so_file": 0
+}
