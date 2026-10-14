@@ -143,6 +143,7 @@
   ('asyncio.windows_utils',
    'C:\\Users\\PC\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\asyncio\\windows_utils.py',
    'PYMODULE'),
+  ('bang_ke', 'H:\\tool_files\\tools\\bang_ke.py', 'PYMODULE'),
   ('base64',
    'C:\\Users\\PC\\AppData\\Local\\Python\\pythoncore-3.14-64\\Lib\\base64.py',
    'PYMODULE'),

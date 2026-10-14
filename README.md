@@ -76,9 +76,100 @@ ví dụ:  ho_chi_minh_bien_nien_tieu_su090523R04T02.PDF
 | 1 | Tên chính (không dấu, nối bằng `_`) | Tên file cũ |
 | 2 | `DDmmYY` – thời gian tạo file | Xem [mục xác định ngày](#ngày-ddmmyy-nhóm-2--thời-gian-tạo-file) |
 | 3 | `R` file ruột, `B` bìa, `D` sách điện tử, `K` văn bản khác | Tên file cũ, nếu không có thì đoán theo từ khoá |
-| 4 | 2 số – đơn vị ban hành (01–21) | Tên file cũ, nếu không có thì đoán theo từ khoá |
+| 4 | 2 số – đơn vị ban hành (01–21) | **Bảng kê sách** (cột `BBT`) theo tên sách + năm, xem [mục dưới](#nhóm-4--tra-từ-bảng-kê-sách-cột-bbt) |
 | 5 | `M` xuất bản mới, `T` tái bản | Tên file cũ, nếu không có thì đoán theo từ khoá |
 | 6 | 2 số – số lần xuất bản (`00` = lần đầu) | Tên file cũ, nếu không có thì đoán theo từ khoá |
+
+---
+
+## Nhóm 4 – tra từ bảng kê sách (cột BBT)
+
+Nhóm 4 **không đoán theo từ khoá trong nội dung** nữa. Cách lấy:
+
+```
+tên sách + năm xuất bản  ->  dòng tương ứng trong bảng kê
+                         ->  cột "BBT"  ->  mã 01..21 theo QĐ 68-QĐ/TW
+```
+
+**Tên sách lấy từ đâu?** Theo thứ tự:
+
+1. **Tên file thô** (bỏ đuôi file + bỏ nhóm mã cũ, **giữ nguyên dấu và khoảng trắng**).
+   Tên này *không* bị chuẩn hoá thành dạng tên file trước khi tra — việc bỏ dấu, bỏ ký tự
+   đặc biệt được `bang_ke.chuan_hoa()` làm cho **cả hai vế** (tên tra và tên trong bảng kê)
+   nên `Dong_chi_Truong_Chinh_voi_que_huong_Nam_Dinh` vẫn khớp với
+   `Đồng chí Trường Chinh với quê hương Nam Định`.
+2. Bản đã chuẩn hoá của tên file (dự phòng, ví dụ khi tên file có ký tự lạ).
+3. Nếu cả hai **không khớp** (điểm < `nguong_khop`), mới thử các **dòng có thể là tên sách
+   ở phần đầu tài liệu** (bỏ qua dòng như "Lời nhà xuất bản", "Nhà xuất bản…", ISBN…).
+   Nguồn này phải khớp rõ ràng hơn: điểm ≥ `nguong_khop_noi_dung` (mặc định `0.8`),
+   để tránh nhầm với một dòng trích dẫn trong sách.
+
+**Cách tính điểm khớp**: chỉ số Dice trên tập từ (bền vững với tiêu đề ngắn trong bảng kê)
+và tỷ lệ chuỗi; nếu tác giả đọc được trong nội dung trùng ≥ 2 từ với cột `Tác giả` thì
+cộng thêm 0.05. Ưu tiên sheet **đúng năm**; khi năm đó không có thì mới tìm năm lân cận,
+rồi tìm ở mọi năm — mọi trường hợp lệch năm đều ghi cảnh báo.
+
+Cột `Ten sach lay tu` trong báo cáo ghi rõ đã lấy tên sách từ `ten file` hay `noi dung (dong N)`.
+
+Bảng kê mặc định là `Tong hop SXB 2006-2025.xlsx`: **mỗi năm một sheet** (2006…2025),
+dòng tiêu đề tự động nhận diện, các cột được đọc: `Tên sách`, `Tác giả`, `BBT`
+(hoặc `Ban biên tập`/`Ban BT`), `QĐXB`, `Lần XB`, `Nơi in`.
+
+Bảng mã `BBT` → nhóm 4 nằm trong `config.json` (`ban_bien_tap`), khoá viết **không dấu, chữ thường**.
+(`tools/bang_ke.py` cũng có bảng mặc định `BAN_BIEN_TAP` tương tự, chỉ dùng khi config thiếu khoá này.)
+
+Phải liệt kê đủ **57 cách viết** vì cột `BBT` mỗi năm ghi một kiểu:
+năm 2007 ghi chữ đầy đủ (`Kinh tế`, `Pháp luật`, `Đảng`, `Lý luận`, `Giáo khoa`, `Quốc tế`),
+từ 2008 trở đi ghi viết tắt (`KT`, `PL`, `Đg`, `KĐLL`, `GK`, `QT`, `SGK`, `Đ`), thêm các biến thể
+`Pl`, `Qt`, `TT NCKH`, `Vụ KH`, `CN Tp HCM`…
+
+| Mã trong bảng kê (các cách viết đã gặp) | Ban / đơn vị | Nhóm 4 |
+|---|---|---|
+| `Đ`, `Đg`, `Đảng` | Ban sách Đảng | 02 |
+| `PL`, `Pháp luật` | Ban sách Nhà nước Pháp luật | 03 |
+| `KĐLL`, `LLKĐ`, `Lý luận`, `Kinh điển` | Ban sách Kinh điển Lý luận | 04 |
+| `KT`, `Kinh tế` | Ban sách Kinh tế | 05 |
+| `QT`, `Quốc tế` | Ban sách Quốc tế | 06 |
+| `GK`, `SGK`, `Giáo khoa` | Ban sách Giáo khoa Tham khảo | 07 |
+| `TT in`, `TTIN`, `TTTC in` | Trung tâm Tổ chức in | 08 |
+| `HCM`, `TPHCM`, `CN Tp HCM` | Chi nhánh T.p Hồ Chí Minh | 10 |
+| `ĐN`, `Đà Nẵng` | Chi nhánh Đà Nẵng | 11 |
+| `Cần Thơ`, `CN Cần Thơ` | Chi nhánh Cần Thơ | 12 |
+| `Vụ KH`, `VKH`, `VKH-TKBT`, `Vụ Kế hoạch` | Vụ Kế hoạch và Thư ký biên tập | 15 |
+| `Vụ Tổ chức` | Vụ Tổ chức cán bộ | 16 |
+| `Văn phòng` | Văn phòng | 17 |
+| `NCKH`, `TTNCKH`, `Ban NCKH`, `TTNCKHXB` | Trung tâm TTNCKH | 18 |
+
+**Thứ tự quyết định nhóm 4:**
+
+1. Bảng kê tìm được sách và mã `BBT` (điểm khớp ≥ `nguong_khop`) → dùng mã đó.
+2. Không tìm được → lấy mã có sẵn trong tên file cũ (nếu có).
+3. Vẫn không có → dùng `mac_dinh.don_vi` trong config, kèm cảnh báo.
+
+**Điểm khớp tên sách**: bỏ dấu + so khớp tập từ (chỉ số Dice) và tỷ lệ chuỗi.
+Ưu tiên sheet đúng năm; nếu năm đó không có mới tìm các năm lân cận
+(`tim_nam_lan_can`), rồi mới tìm ở tất cả các năm (`tim_ngoai_nam`) — mọi trường hợp
+lệch năm đều có cảnh báo trong báo cáo.
+
+**Các cột báo cáo liên quan** (sheet `Da_xu_ly`): `Nguon nhom 4`, `BBT (bang ke)`,
+`Ma N4 (bang ke)`, `Ten sach trong bang ke`, `Vi tri bang ke`, `Diem khop`,
+`Tac gia (bang ke)`, `Lan XB (bang ke)`.
+
+**Sheet `BBT_chua_map`**: liệt kê những mã `BBT` gặp trong lúc chạy mà chưa có trong
+`ban_bien_tap`, kèm số lần gặp và ví dụ tên sách, để bạn bổ sung vào config.
+
+**Kiểm tra tay kết quả tra cứu:**
+
+```powershell
+python H:\tool_files\tools\kiem_tra_bang_ke.py "H:\tool_files\_test_dau_vao"
+python H:\tool_files\tools\kiem_tra_bang_ke.py --ten "Giáo trình lịch sử kinh tế quốc dân" --nam 2007
+```
+
+Lệnh này in ra 3 ứng viên khớp nhất (kèm điểm, sheet, dòng, tác giả, BBT, mã N4)
+để bạn đối chiếu trước khi tin kết quả.
+
+> **Lưu ý:** sheet `2006` trong file bảng kê **không có cột BBT**, nên sách năm 2006
+> sẽ rơi xuống bước 2/3 ở trên.
 
 ---
 
@@ -88,13 +179,14 @@ Tên file: `Bao_cao_sap_xep_<ngày giờ>.xlsx` (nằm trong thư mục đích).
 
 | Sheet | Nội dung |
 |-------|----------|
-| `Da_xu_ly` | Mọi file đã xử lý: tên gốc, **tên mới**, năm, **tác giả**, ngày nhóm 2 + nguồn ngày, các nhóm 3–6, ngày sửa file, kích thước, đường dẫn gốc/mới, **cảnh báo** |
+| `Da_xu_ly` | Mọi file đã xử lý: tên gốc, **tên mới**, năm, **tác giả**, ngày nhóm 2 + nguồn ngày, các nhóm 3–6, **thông tin tra từ bảng kê** (BBT, mã N4, tên sách, điểm khớp), ngày sửa file, kích thước, đường dẫn gốc/mới, **cảnh báo** |
 | `Thieu_nam_trong_noi_dung` | File **không đọc được năm** trong nội dung: tên file, đường dẫn, **ngày modified**, năm đọc được từ tên file cũ |
 | `Thieu_ngay_trong_noi_dung` | File không đọc được ngày trong nội dung (đã dùng nguồn khác – ghi rõ nguồn) |
 | `Loi_doc_file` | File **lỗi/không đọc được** (PDF hỏng, PDF scan ảnh, `.doc` hỏng…) kèm chi tiết lỗi |
 | `Khong_ho_tro` | File khác định dạng (`.txt`, `.rar`…) và file tạm `~$...` của Word |
 | `Tong_hop_theo_nam` | Số file, dung lượng, số file độ tin cậy thấp, số file lệch năm theo từng năm |
-| `Cau_hinh` | Toàn bộ tham số đã dùng khi chạy |
+| `BBT_chua_map` | Mã `BBT` trong bảng kê chưa có trong bảng mã config (kèm ví dụ tên sách) |
+| `Cau_hinh` | Toàn bộ tham số đã dùng khi chạy (gồm cả file bảng kê và số file tra được) |
 
 > 👀 Cột **`Canh bao`** trong sheet `Da_xu_ly` là nơi cần xem **đầu tiên**: ghi rõ file nào bị đoán metadata, lệch năm, hoặc phải dùng ngày sửa file.
 
@@ -151,6 +243,15 @@ Các mục hay dùng:
 "dinh_dang_ho_tro": [".pdf", ".docx", ".doc"],
 "copy_giu_file_goc": true,          // false = di chuyển file
 "ngay_phai_cung_nam_voi_thu_muc": true,
+"bang_ke_sach": {
+  "bat": true,
+  "file": "Tong hop SXB 2006-2025.xlsx",   // đường dẫn tuyệt đối hoặc tương đối cạnh tool
+  "nguong_khop": 0.6,                      // điểm khớp tên sách tối thiểu (tên file)
+  "nguong_khop_noi_dung": 0.8,             // ngưỡng cao hơn cho tên sách lấy trong nội dung
+  "tim_nam_lan_can": 1,                    // tìm thêm +-N năm nếu năm đó không có
+  "tim_ngoai_nam": true                    // tìm ở mọi năm khi vẫn không khớp
+},
+"ban_bien_tap": { "pl": "03", "kdll": "04", "kt": "05", "gk": "07", "...": "..." },
 "ten": {
   "viet_thuong": false,             // true = đổi tên chính thành chữ thường
   "bo_dau": true,                   // bỏ dấu tiếng Việt
@@ -161,7 +262,8 @@ Các mục hay dùng:
 "mac_dinh": { "loai_file": "R", "don_vi": "04", "tinh_trang": "M", "so_lan_xuat_ban": "00" }
 ```
 
-`doan_don_vi`, `doan_loai_file`, `doan_tinh_trang`: bảng **từ khoá → mã**, dùng khi tên file cũ không có sẵn mã. Sửa/thêm từ khoá theo thực tế của bạn.
+`doan_loai_file`, `doan_tinh_trang`: bảng **từ khoá → mã**, dùng khi tên file cũ không có sẵn mã.
+Riêng **nhóm 4 chỉ lấy từ bảng kê sách** — không còn bảng từ khoá nào cho nhóm 4 trong config.
 
 ---
 

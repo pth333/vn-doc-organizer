@@ -303,6 +303,39 @@ def extract_publisher(text, head_chars=4000):
     return ""
 
 
+# --------------------------------------------------------------------------- #
+# Ung vien ten sach (de tra bang ke sach xuat ban)
+# --------------------------------------------------------------------------- #
+STOP_TITLE = re.compile(
+    r"^(lời|mục|phần|chương|bài|nhà xuất bản|nxb|hà nội|in |in xong|tái bản|xuất bản|"
+    r"bản quyền|mã số|trang|giấy phép|địa chỉ|điện thoại|website|isbn|chịu trách nhiệm|"
+    r"biên tập|trình bày|sửa bản in|liên kết xuất bản|sách xuất bản|tập thể|nhóm)\b", re.I)
+STOP_TITLE_TAIL = re.compile(
+    r"(nhà xuất bản chính trị quốc gia|nhà xuất bản|nxb\.?|hà nội\s*-\s*\d{4}|"
+    r"điện thoại|website|isbn|giá\s*:?\s*\d)", re.I)
+
+
+def ten_sach_ung_vien(text, toi_da=6, head_chars=4000):
+    """Cac dong co the la TEN SACH o phan dau tai lieu (de tra bang ke sach)."""
+    ds = []
+    for line in text[:head_chars].split("\n"):
+        s = re.sub(r"[ \t\xa0]+", " ", line).strip(" \t-–—•*:,.«»\"'")
+        if len(s) < 8 or len(s) > 150:
+            continue
+        if len(s.split()) < 2:
+            continue
+        if STOP_TITLE.match(s) or STOP_TITLE_TAIL.search(s):
+            continue
+        if sum(ch.isdigit() for ch in s) > 6:
+            continue
+        if s in ds:
+            continue
+        ds.append(s)
+        if len(ds) >= toi_da:
+            break
+    return ds
+
+
 def analyze(text):
     """Phan tich tong hop: tra ve dict thong tin trich xuat tu noi dung."""
     year, year_how, year_conf, year_ev = extract_year(text)

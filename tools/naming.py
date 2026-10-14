@@ -120,16 +120,6 @@ def guess_loai_file(text, cfg, mac_dinh):
     return mac_dinh, "mac dinh trong config"
 
 
-def guess_don_vi(text, cfg, mac_dinh):
-    """Nhom 4: doan don vi ban hanh theo tu khoa."""
-    low = strip_accents(text[:8000]).lower()
-    for rule in cfg.get("doan_don_vi", []):
-        for kw in rule.get("tu_khoa", []):
-            if strip_accents(kw).lower() in low:
-                return rule["ma"], "tu khoa '%s' trong noi dung" % kw
-    return mac_dinh, "mac dinh trong config"
-
-
 def guess_tinh_trang(text, cfg, mac_dinh):
     """Nhom 5 + 6: M/T va so lan xuat ban."""
     low = strip_accents(text[:8000]).lower()
